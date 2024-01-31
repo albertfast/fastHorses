@@ -12,7 +12,7 @@ trigger accTrigger on Account (after update) {
             }
         }
     }
-    List<Contact> conList = [SELECT Id,AccountId Phone FROM Contact 
+    List<Contact> conList = [SELECT Id,AccountId, Phone FROM Contact 
                              WHERE AccountId IN :accMap.keySet()];
     List<Contact> listToUpdateContacts = new List<Contact>();                         
     if (!conList.isEmpty()) {
