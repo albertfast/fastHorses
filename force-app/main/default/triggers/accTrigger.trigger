@@ -1,13 +1,18 @@
 /*Whenever Account's Phone field is updated then 
 all related Contact's phone field should also get 
 updated with parent account's Phone. */
-trigger accTrigger on Account (after update) {
+trigger accTrigger on Account (after insert,after update) {
     Map<Id,Account> accMap = new Map<Id,Account>();
-    if (trigger.isAfter && trigger.isUpdate) {
-        if (!trigger.new.isEmpty()) {
-            for (Account acc : trigger.new) {
-                if (trigger.oldMap.get(acc.Id).Phone != acc.Phone) {
-                    accMap.put(acc.Id, acc);
+    if (trigger.isAfter) {
+        if (trigger.isInsert) {
+            AccountTriggerHandler.insertAccount(trigger.new);
+        }
+        if (trigger.isUpdate) {
+            if (!trigger.new.isEmpty()) {
+                for (Account acc : trigger.new) {
+                    if (trigger.oldMap.get(acc.Id).Phone != acc.Phone) {
+                        accMap.put(acc.Id, acc);
+                    }
                 }
             }
         }
